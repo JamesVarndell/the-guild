@@ -18,7 +18,7 @@ class Entity(DatabaseManager):
         """Generate a damage output value in battle."""
         brawn_mod = buffs.get('attributes', dict()).get('brawn', 0)
         damage = random.randint(1, 6) + self.attributes.brawn + brawn_mod
-        return damage
+        return max(1, damage)
 
     @property
     def vitality(self):
