@@ -1,0 +1,8 @@
+
+name: Combat!
+area: caves
+weight: 10
+
+image: /static/images/caves/enemies/rat.png
+text: A giant white rat scurries through the darkness and attacks!
+enemy__name: giant white rat

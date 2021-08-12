@@ -1,0 +1,83 @@
+---
+name: caves-pond
+
+text: >-
+  The sound of dripping water and the smell of sulphur become increasingly
+  intense as you make your way deep into the cave system. The narrow tunnel
+  is gradually opening up, and the walls are getting slimy...
+
+  <SKILLCHECK|DEFTNESS=5>
+  [FAIL|DAMAGE=1] You slip on a clump of slime and lose your balance, falling
+  directly on your {character.random_large_bodypart}. Ouch!
+  [SUCCESS]
+  </SKILLCHECK>
+
+  You look up and find yourself in a huge grotto, littered with stalagmites and
+  stalagtites, clumped red roots and glowing mushrooms. In the middle of the
+  cavern lies a lake, still and shimmering blue in the light of the mushrooms.
+
+options:
+  - prompt: Forage
+    daily_limit: 3
+    requirements:
+      botany: 2
+    choice: weighted
+    limit_result: >-
+      You can't find any more forage - try again tomorrow.
+    result:
+      - weight: 4
+        text: >-
+          You pick some glowing mushrooms.
+        items:
+          - name: gleaming fungus
+            quantity: 2-4
+        xp:
+          botany: 5
+      - weight: 4
+        text: >-
+          You take some cuttings of the crimson roots.
+        items:
+          - name: vermiculo root
+            quantity: 1-3
+        xp:
+          botany: 5
+      - weight: 1
+        text: >-
+          You muster a great haul of mushrooms and roots!
+        items:
+          - name: vermiculo root
+            quantity: 2
+        items:
+          - name: gleaming fungus
+            quantity: 2
+        xp:
+          botany: 10
+  - prompt: Fish
+    daily_limit: 5
+    items:
+      - type: fishing
+    choice: weighted
+    limit_result: >-
+      Nothing seems to be biting - maybe try again tomorrow.
+    result:
+      - weight: 6
+        text: >-
+          You reel out your line... bite! You catch a {weight} eel!
+        items:
+          - name: cave eel
+            quantity: 1
+        xp:
+          fishing: 5
+      - weight: 4
+        text: >-
+          You reel out your line... bite! You catch a {weight} bulletfish!
+        items:
+          - name: blind bulletfish
+            quantity: 1
+        xp:
+          fishing: 5
+      - weight: 1
+        encounter: cave squid
+        text: >-
+          You reel out your line... bite! It feels like a big one!
+

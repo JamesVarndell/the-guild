@@ -1,0 +1,19 @@
+
+name: giant white rat
+description: It looks kind of cute from a distance. 
+
+vitals:
+  vitality: 10
+  energy: 5
+  willpower: 0
+
+attributes:
+  speed: 5
+  brawn: 2
+  deftness: 3
+  endurance: 2
+
+drops:
+  rat_hide:
+    freq: 0.2
+    quantity: 1-3

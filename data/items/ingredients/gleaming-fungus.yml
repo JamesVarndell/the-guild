@@ -1,0 +1,10 @@
+
+name: gleaming fungus
+description: A bioluminescent fungus that grows in deep, dank caves.
+unknown_name: strange glowing mushroom
+# latin_name: boletus candentis
+image: ingredients/gleaming-fungus.png
+
+properties:
+  remove_effects:
+    - bleeding

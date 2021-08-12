@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Fight!{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center;">
+  {% if encounter.image is not none %}
+    <img src="{{ encounter.image }}" alt="IMAGE" width=120><br>
+  {% endif %}
+
+  {% if encounter.state.type == "combat" %}
+
+    <progress id="enemy_health" value="{{ encounter.enemy.vitality }}" max="{{ encounter.enemy.vitals.max_vitality }}"></progress>
+    <p>{{ encounter.enemy.vitality}}/{{ encounter.enemy.vitals.max_vitality }}</p>
+
+    {% if encounter.state.first == "character" %}
+      <p>You hit the {{ encounter.enemy.name }} for {{ encounter.state.first_damage }} damage.</p>
+    {% elif encounter.state.first == "enemy" %}
+      <p>The {{ encounter.enemy.name }} hits you for {{ encounter.state.first_damage }} damage.</p>
+    {% endif %}
+
+    {% if encounter.state.second == "character" %}
+      <p>You hit the {{ encounter.enemy.name }} for {{ encounter.state.second_damage }} damage.</p>
+    {% elif encounter.state.second == "enemy" %}
+      <p>The {{ encounter.enemy.name }} hits you for {{ encounter.state.second_damage }} damage.</p>
+    {% endif %}
+
+    <progress id="player_health" value="{{ encounter.character.vitality }}" max="{{ encounter.character.vitals.max_vitality }}"></progress>
+    <p>{{ encounter.character.vitality}}/{{ encounter.character.vitals.max_vitality }}</p>
+
+  {% endif %}
+
+  {% if encounter.result_text is not none %}
+    <p>{{ encounter.result_text }}</p>
+  {% endif %}
+
+  <form name="refresh" method="post">
+    <input type="hidden" name="refresh" id="refresh" value="refresh" required>
+    <input type="submit" value="Continue the hunt!">
+  </form>
+</div>
+{% endblock %}

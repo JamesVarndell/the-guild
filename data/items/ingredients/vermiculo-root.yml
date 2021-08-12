@@ -1,0 +1,10 @@
+
+name: vermiculo root
+description: The deep, blood-red roots of the vermiculous tree.
+unknown_name: unusual crimson root
+# latin_name: boletus candentis
+image: ingredients/vermiculo-root.png
+
+properties:
+  restore:
+    - stamina

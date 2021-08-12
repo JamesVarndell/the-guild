@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Fight!{% endblock %}</h1>
+{% endblock %}
+
+
+
+{% block content %}
+<div style="text-align: center;">
+  {% if encounter.image is not none %}
+    <img src="{{ encounter.image }}" alt="IMAGE" width=120><br>
+  {% endif %}
+
+  {% if not encounter.state %}
+    <p>{{ encounter.text }}</p>
+  {% elif encounter.state.type == "combat" %}
+
+    <progress id="enemy_health" value="{{ encounter.enemy.vitality }}" max="{{ encounter.enemy.vitals.max_vitality }}"></progress>
+    <p>{{ encounter.enemy.vitality}}/{{ encounter.enemy.vitals.max_vitality }}</p>
+
+    {% if encounter.state.heal %}
+      <p>You heal yourself for {{ encounter.state.heal }} points.</p>
+    {% endif %}
+
+    {% if encounter.state.first == "character" %}
+      <p>You hit the {{ encounter.enemy.name }} for {{ encounter.state.first_damage }} damage.</p>
+    {% elif encounter.state.first == "enemy" %}
+      <p>The {{ encounter.enemy.name }} hits you for {{ encounter.state.first_damage }} damage.</p>
+    {% endif %}
+
+    {% if encounter.state.second == "character" %}
+      <p>You hit the {{ encounter.enemy.name }} for {{ encounter.state.second_damage }} damage.</p>
+    {% elif encounter.state.second == "enemy" %}
+      <p>The {{ encounter.enemy.name }} hits you for {{ encounter.state.second_damage }} damage.</p>
+    {% endif %}
+
+    <progress id="player_health" value="{{ encounter.character.vitality }}" max="{{ encounter.character.vitals.max_vitality }}"></progress>
+    <p>{{ encounter.character.vitality}}/{{ encounter.character.vitals.max_vitality }}</p>
+
+  {% endif %}
+
+  <form name='attack' method="post">
+    <input type="hidden" name="attack" id="attack" value="attack" required>
+    <input type="submit" value="Attack!">
+  </form>
+
+  <form name='heal' method="post">
+    <input type="hidden" name="heal" id="heal" value="heal" required>
+    <input type="submit" value="Heal">
+  </form>
+</div>
+{% endblock %}
+
+
+
+
