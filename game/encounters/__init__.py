@@ -73,9 +73,17 @@ class UserEncounter(DatabaseManager):
     def enemy(self):
         return EncounterEnemy(self.db, self.id)
 
-    def attack(self, attacker, defender, additive=False):
-        damage = attacker.roll_damage()
-        defender.vitality -= damage
+    def attack(self, attacker, defender, buffs=dict(), additive=False):
+        if attacker.TYPE == 'character':
+            attacker_buffs, defender_buffs = buffs, dict()
+        else:
+            attacker_buffs, defender_buffs = dict(), buffs
+
+        damage = None
+        evade = defender.roll_evasion(attacker, buffs=defender_buffs)
+        if not evade:
+            damage = attacker.roll_damage(buffs=attacker_buffs)
+            defender.vitality -= damage
         
         state = {
             'type': 'combat',
@@ -100,15 +108,30 @@ class UserEncounter(DatabaseManager):
         self.update('state', state)
         return state
 
-    def combat(self, additive=False):
+    def combat(self, stance=None, additive=False):
+
+        buffs = dict()
+        n_attacks = 1
+        if stance is not None:
+            stance_data = self.character.stances[stance]
+            buffs = stance_data.get('buffs', dict())
+            n_attacks = stance_data.get('n_attacks', 1)
 
         first, second = self.character, self.enemy
-        if self.enemy.roll_initiative() > self.character.roll_initiative():
+        if self.enemy.roll_initiative() > self.character.roll_initiative(buffs):
             first, second = self.enemy, self.character
 
-        first_damage = self.attack(first, second)['first_damage']
+        first_damage = self.attack(first, second, buffs=buffs)['first_damage']
+        if first.TYPE == 'character' and n_attacks > 1:
+            first_damage = [first_damage]
+            for _ in range(n_attacks-1):
+                first_damage.append(self.attack(first, second, buffs=buffs)['first_damage'])
         if second.vitality > 0:
-            second_damage = self.attack(second, first)['first_damage']
+            second_damage = self.attack(second, first, buffs=buffs)['first_damage']
+            if second.TYPE == 'character' and n_attacks > 1:
+                second_damage = [second_damage]
+                for _ in range(n_attacks-1):
+                    second_damage.append(self.attack(second, first, buffs=buffs)['first_damage'])
         else:
             second = None
             second_damage = None

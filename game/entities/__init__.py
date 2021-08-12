@@ -6,16 +6,18 @@ from game._database import DatabaseManager
 
 class Entity(DatabaseManager):
 
-    def roll_initiative(self):
+    def roll_initiative(self, buffs=dict()):
         """Generate an initiative rank to determine turn order in battle."""
+        speed_mod = buffs.get('attributes', dict()).get('speed', 0)
         roll = random.randint(1, 20)
         if roll > 1:
-            roll += self.attributes.speed
+            roll += self.attributes.speed + speed_mod
         return roll
 
-    def roll_damage(self):
+    def roll_damage(self, buffs=dict()):
         """Generate a damage output value in battle."""
-        damage = random.randint(1, 6)
+        brawn_mod = buffs.get('attributes', dict()).get('brawn', 0)
+        damage = random.randint(1, 6) + self.attributes.brawn + brawn_mod
         return damage
 
     @property

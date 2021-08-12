@@ -21,6 +21,7 @@ CREATE TABLE characters (
   skills TEXT NOT NULL,
   buffs TEXT NOT NULL,
   abilities TEXT,
+  stances TEXT,
   effects TEXT,
   inventory TEXT,
   body TEXT

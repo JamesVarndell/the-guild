@@ -25,14 +25,13 @@ def user_encounter():
             encounter.start()
 
     if request.method == 'POST':
-        attack = request.form.get('attack')
+        stance = request.form.get('stance')
         heal = request.form.get('heal')
         if heal:
             encounter.heal()
             encounter.attack(encounter.enemy, encounter.character, additive=True)
-        elif attack:
-            encounter.combat()
-        print(encounter.state)
+        elif stance:
+            encounter.combat(stance=stance)
         return redirect(url_for('encounter.user_encounter'))
 
     template = 'encounters/combat.html'

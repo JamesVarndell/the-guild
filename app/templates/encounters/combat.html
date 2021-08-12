@@ -24,15 +24,31 @@
     {% endif %}
 
     {% if encounter.state.first == "character" %}
-      <p>You hit the {{ encounter.enemy.name }} for {{ encounter.state.first_damage }} damage.</p>
+      {% if encounter.state.first_damage is none %}
+        <p>The {{ encounter.enemy.name }} avoids your attack!</p>
+      {% else %}
+        <p>You hit the {{ encounter.enemy.name }} for {{ encounter.state.first_damage }} damage.</p>
+      {% endif %}
     {% elif encounter.state.first == "enemy" %}
-      <p>The {{ encounter.enemy.name }} hits you for {{ encounter.state.first_damage }} damage.</p>
+      {% if encounter.state.first_damage is none %}
+        <p>You avoid the {{ encounter.enemy.name }}'s attack!</p>
+      {% else %}
+        <p>The {{ encounter.enemy.name }} hits you for {{ encounter.state.first_damage }} damage.</p>
+      {% endif %}
     {% endif %}
 
     {% if encounter.state.second == "character" %}
-      <p>You hit the {{ encounter.enemy.name }} for {{ encounter.state.second_damage }} damage.</p>
+      {% if encounter.state.second_damage is none %}
+        <p>The {{ encounter.enemy.name }} avoids your attack!</p>
+      {% else %}
+        <p>You hit the {{ encounter.enemy.name }} for {{ encounter.state.second_damage }} damage.</p>
+      {% endif %}
     {% elif encounter.state.second == "enemy" %}
-      <p>The {{ encounter.enemy.name }} hits you for {{ encounter.state.second_damage }} damage.</p>
+      {% if encounter.state.second_damage is none %}
+        <p>You avoid the {{ encounter.enemy.name }}'s attack!</p>
+      {% else %}
+        <p>The {{ encounter.enemy.name }} hits you for {{ encounter.state.second_damage }} damage.</p>
+      {% endif %}
     {% endif %}
 
     <progress id="player_health" value="{{ encounter.character.vitality }}" max="{{ encounter.character.vitals.max_vitality }}"></progress>
@@ -40,8 +56,15 @@
 
   {% endif %}
 
+  {% for stance in stances %}
+  
+  {% endfor %}
   <form name='attack' method="post">
-    <input type="hidden" name="attack" id="attack" value="attack" required>
+    <select name=stance>
+      {% for stance in encounter.character.stances %}
+      <option value= "{{ stance }}" SELECTED>{{ stance }}</option>"
+      {% endfor %}
+    </select>
     <input type="submit" value="Attack!">
   </form>
 

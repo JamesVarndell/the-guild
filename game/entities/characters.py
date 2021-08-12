@@ -1,4 +1,5 @@
 
+import random
 import numpy as np
 from collections import namedtuple
 
@@ -10,6 +11,14 @@ class Character(Entity):
     TABLE = 'characters'
     PRIMARY_KEY = 'user__id'
     TYPE = 'character'
+
+    def roll_evasion(self, attacker, buffs=dict()):
+        deftness_mod = buffs.get('attributes', dict()).get('deftness', 0)
+        evade = (
+            (random.randint(1, 6) + self.attributes.deftness + deftness_mod) >
+            (random.randint(1, 12) + attacker.attributes.accuracy)
+        )
+        return evade
 
     def gain_xp(self, skill, xp):
         self.skills[skill] += xp

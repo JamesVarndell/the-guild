@@ -12,6 +12,7 @@ attributes:
   brawn: 2
   deftness: 3
   endurance: 2
+  accuracy: 2
 
 drops:
   rat_hide:
